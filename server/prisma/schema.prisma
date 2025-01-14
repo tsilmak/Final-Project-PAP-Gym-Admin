@@ -1,0 +1,321 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PRISMA_DATABASE_URL")
+}
+
+model Roles {
+  rolesId   Int    @id @default(autoincrement())
+  rolesName String @unique
+  users     User[]
+}
+
+model User {
+  userId                 Int                     @id @default(autoincrement())
+  membershipNumber       String                  @unique
+  email                  String                  @unique
+  hashedPassword         String
+  salt                   String
+  fname                  String
+  lname                  String
+  phoneNumber            String
+  gender                 String
+  birthDate              DateTime
+  docType                String
+  docNumber              String                  
+  nif                    String                  @unique
+  address                String
+  address2               String?
+  zipcode                String
+  country                String
+  city                   String
+  roleId                 Int                     @default(1)
+  picturePublicId        String?
+  profilePictureUrl      String?                 @default("https://res.cloudinary.com/dmfbmt6mi/image/upload/v1728065225/fxprtk8maztocrsmfswh.jpg")
+  customerStripeId    String  @unique             
+  createdAt              DateTime                @default(now())
+  conversationsIds       Int[]
+  blogs                  BlogAuthor[]
+  InstructorToClass      InstructorToClass[]
+  messages               Message[]
+  signatures             Signature[]
+  role                   Roles                   @relation(fields: [roleId], references: [rolesId])
+  classes                Class[]                 @relation("UserClass")
+
+
+  bodyMetrics BodyMetrics[] @relation("MetricsForUser")
+
+  appointmentsMade  BodyMetrics[] @relation("AppointmentMaker")
+
+
+
+  workoutPlans  WorkoutPlan[]   @relation("BelongsToUser")  // Plans the user owns
+  createdPlans  WorkoutPlan[]   @relation("CreatedByUser")  // Plans created by the user
+}
+
+
+model Conversation {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  userWhoCreatedConversation Int
+  participantIds Int[]
+  messageIds     Int[]
+  messages       Message[]
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  conversationId Int
+  senderId       Int
+  text           String
+  videoUrl       String?
+  imageUrl       String?
+  cloudinaryImagePublicId String?
+  cloudinaryVideoPublicId String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  sender         User         @relation(fields: [senderId], references: [userId])
+}
+
+model Signature {
+  signatureId Int       @id @default(autoincrement())
+  gymPlanId   Int
+  startDate   DateTime
+  endDate     DateTime?
+  isActive    Boolean   @default(false)
+  userId      Int
+  Payment     Payment[]
+  gymPlan     GymPlan   @relation(fields: [gymPlanId], references: [gymPlanId])
+  user        User      @relation(fields: [userId], references: [userId])
+}
+
+
+model PaymentStatus {
+  paymentStatusId   Int       @id @default(autoincrement())
+  paymentStatusName String    @unique
+  payment           Payment[]
+}
+
+model Payment {
+  paymentId       Int           @id @default(autoincrement())
+  title           String        
+  date            DateTime
+  amount          Float
+  signatureId     Int
+  paymentStatusId Int           @default(1)
+  paymentStripeId String? @unique
+  paymentStatus   PaymentStatus @relation(fields: [paymentStatusId], references: [paymentStatusId])
+  signature       Signature     @relation(fields: [signatureId], references: [signatureId])
+}
+
+model GymPlan {
+  gymPlanId                 Int                         @id @default(autoincrement())
+  features                  Json
+  price                     Int
+  name                      String
+  isHighlightedPlan           Boolean                     @default(false)
+  productStripeId     String?      @unique
+  priceStripeId     String?      @unique
+
+  isActive    Boolean     
+  GymPlanExclusivityToClass GymPlanExclusivityToClass[]
+  signatures                Signature[]
+  classes                   Class[]                     @relation("GymPlanClass")
+}
+
+model BlogCategory {
+  categoryId Int                  @id @default(autoincrement())
+  name       String               @unique
+  blogs      BlogCategoryOnBlog[]
+}
+
+model Blog {
+  blogId             String               @id @default(uuid())
+  title              String
+  body               String
+  coverImageUrl      String
+  coverImagePublicId String
+  published          Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  authors            BlogAuthor[]
+  categories         BlogCategoryOnBlog[]
+}
+
+model BlogAuthor {
+  blogId String
+  userId Int
+  blog   Blog   @relation(fields: [blogId], references: [blogId], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [userId], onDelete: Cascade)
+
+  @@id([blogId, userId])
+}
+
+model BlogCategoryOnBlog {
+  blogId     String
+  categoryId Int
+  blog       Blog         @relation(fields: [blogId], references: [blogId], onDelete: Cascade)
+  category   BlogCategory @relation(fields: [categoryId], references: [categoryId], onDelete: Cascade)
+
+  @@id([blogId, categoryId])
+}
+
+model Class {
+  classId                   Int                         @id @default(autoincrement())
+  location                  String
+  maxParticipants           Int
+  startTime                 String
+  endTime                   String
+  classDate                 DateTime
+  isOnline                  Boolean
+  onlineClassUrl            String?
+  isExclusive               Boolean
+  classTypeId               Int
+  isFullDay                 Boolean
+  classType                 ClassType                   @relation(fields: [classTypeId], references: [classTypeId])
+  GymPlanExclusivityToClass GymPlanExclusivityToClass[]
+  InstructorToClass         InstructorToClass[]
+  exclusiveGymPlans         GymPlan[]                   @relation("GymPlanClass")
+  instructors               User[]                      @relation("UserClass")
+}
+
+model ClassType {
+  classTypeId Int     @id @default(autoincrement())
+  name        String  @unique
+  color       String  @unique
+  Class       Class[]
+}
+
+model InstructorToClass {
+  userId  Int
+  classId Int
+  Class   Class @relation(fields: [classId], references: [classId])
+  User    User  @relation(fields: [userId], references: [userId])
+
+  @@id([userId, classId])
+}
+
+model GymPlanExclusivityToClass {
+  gymPlanId Int
+  classId   Int
+  Class     Class   @relation(fields: [classId], references: [classId])
+  GymPlan   GymPlan @relation(fields: [gymPlanId], references: [gymPlanId])
+
+  @@id([gymPlanId, classId])
+}
+
+enum MachineTypes {
+  Cardio
+  Musculacao 
+  Funcional
+}
+
+enum ExerciseTypes {
+  Forca
+  Cardio
+  Funcional
+}
+
+enum ExperienceLevel {
+Iniciante
+Intermediario
+Avancado
+}
+
+model Machine {
+    MachineId String  @id @default(uuid())
+    name String @unique
+    type MachineTypes
+    imageUrl String
+    imagePublicId String
+    description String
+    exercises    Exercise[]  
+}
+
+
+model Exercise {
+  exerciseId        Int               @id @default(autoincrement())
+  name              String
+  exerciseType      ExerciseTypes
+  experienceLevel   ExperienceLevel
+  targetMuscle      String
+  secondaryMuscle   String?
+  commentsAndTips   String[]
+  execution         String[]
+  videoUrl          String?
+  imageUrl String
+  imagePublicId String
+  
+  // Relationship to Machine
+  equipmentId       String
+  equipment         Machine           @relation(fields: [equipmentId], references: [MachineId])
+
+  WorkoutPlanExercise WorkoutPlanExercise[]
+}
+
+model WorkoutPlan {
+  workoutPlanId String    @id @default(uuid())
+  name          String
+  userId        Int        // ID of the user the plan belongs to
+  madeByUserId  Int        // ID of the user who created the plan
+  createdAt     DateTime   @default(now())  // Automatically set to current time
+  updatedAt     DateTime   @updatedAt       // Automatically updated when modified
+
+  // Relation to exercises used in the plan
+  exercises     WorkoutPlanExercise[]
+
+  // Explicit relations to User model with different relation names
+  madeByUser    User       @relation("CreatedByUser", fields: [madeByUserId], references: [userId])  // User who created the plan
+  user          User       @relation("BelongsToUser", fields: [userId], references: [userId])  // The user the plan belongs to
+}
+
+model WorkoutPlanExercise {
+  id           String @id @default(uuid())
+  workoutPlanId String
+  exerciseId   Int
+  exerciseName String
+  sets         Int
+  reps         Int
+  weight       Int
+
+  workoutPlan  WorkoutPlan @relation(fields: [workoutPlanId], references: [workoutPlanId])
+  exercise     Exercise    @relation(fields: [exerciseId], references: [exerciseId])
+}
+model WorkoutCompletion {
+  workoutCompletionId String @id @default(uuid())
+  userWhoCompleted    Int //TODO ADD REFERENCE TO USER
+  workoutPlanSnapshot Json // Stores the plan details at the time of completion
+  summary             Json
+}
+model BodyMetrics {
+  bodyMetricsId       Int      @id @default(autoincrement())
+  
+  userId              Int      // The user for whom the body metrics are recorded
+  appointmentMadeById Int      // The user who made the appointment
+ 
+  appointmentDate     DateTime
+ 
+  weight              Float
+  height              Float
+
+  waist               Float?
+  hip                 Float?
+  thigh               Float?
+  chest               Float?
+  biceps              Float?
+  restingHeartRate    Float?
+
+  fatPercentage       Float?
+  muscleMass          Float?
+
+  // Relation to the user for whom the body metrics are recorded
+  user                User     @relation("MetricsForUser", fields: [userId], references: [userId])
+
+  // Relation to the user who made the appointment
+  appointmentMadeBy   User     @relation("AppointmentMaker", fields: [appointmentMadeById], references: [userId])
+}

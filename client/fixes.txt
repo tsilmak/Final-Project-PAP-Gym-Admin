@@ -1,0 +1,20 @@
+FIX "(node:12956) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(Use `node --trace-deprecation ...` to show where the warning was created)     
+(node:12956) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option."
+
+Go to client\node_modules\react-scripts\config\webpackDevServer.config.js 
+Remove -> onBeforeSetupMiddleware & onAfterSetupMiddleware 
+Add -> setupMiddlewares: (middlewares, devServer) => {
+      if (!devServer) {
+        throw new Error("webpack-dev-server is not defined");
+      }
+      if (fs.existsSync(paths.proxySetup)) {
+        require(paths.proxySetup)(devServer.app);
+      }
+      middlewares.push(
+        evalSourceMapMiddleware(devServer),
+        redirectServedPath(paths.publicUrlOrPath),
+        noopServiceWorkerMiddleware(paths.publicUrlOrPath)
+      );
+      return middlewares;
+    },

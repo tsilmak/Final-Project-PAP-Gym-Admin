@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+}
+
+/* PHONE INPUT (\registerCustomer) */
+.react-tel-input .special-label {
+  display: none !important;
+}
+
+.react-tel-input .country-list .country-name {
+  color: var(--secondary-100) !important;
+}
+
+.react-tel-input .country-list .search {
+  background-color: var(--background-alt) !important;
+}
+
+.react-tel-input .country-list {
+  background-color: var(--background-default) !important;
+}
+
+.react-tel-input .form-control {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  height: 3rem !important;
+  width: 100% !important;
+  border-color: #545b82 !important;
+}
+.react-tel-input .form-control:hover {
+  border-color: white !important;
+}
+.react-tel-input .country-list .search-box {
+  background-color: var(--background-default) !important;
+  color: white !important;
+}
+
+.react-tel-input .country-list .country:hover {
+  background-color: var(--background-alt) !important;
+}
+.react-tel-input .country-list .country.highlight {
+  background-color: transparent !important;
+}
+
+/* MUI */
+
+/* Padding adjustments for the list */
+.MuiList-padding {
+  padding: 8px !important; /* Adjust padding as needed */
+}
+
+/* Styles for the menu list */
+.MuiMenu-list {
+  background-color: var(
+    --background-default
+  ) !important; /* Default background color */
+}
+
+/* Little white on select menus */
+.css-6hp17o-MuiList-root-MuiMenu-list {
+  border: 1px solid var(--primary-main) !important;
+}
+
+/* Styles for menu items on hover */
+.MuiMenuItem-root:hover {
+  background-color: var(--primary-main) !important;
+}
+
+.MuiPopper-root,
+.MuiAutocomplete-popper,
+.css-2xrgrn-MuiPopper-root-MuiAutocomplete-popper {
+  background-color: var(--primary-main) !important;
+}
+
+.apexcharts-menu {
+  background-color: var(--primary-main) !important;
+}
+.apexcharts-menu-item:hover {
+  background-color: var(--background-alt) !important;
+}
+
+/* Style for the Quill editor toolbar */
+.ql-toolbar {
+  background-color: #f0f0f5; /* Adjust toolbar background */
+  border: 1px solid #ddd; /* Toolbar border */
+  color: #333; /* Toolbar text color */
+}
+
+/* Style for toolbar buttons (bold, italic, etc.) */
+.ql-toolbar .ql-formats button,
+.ql-toolbar .ql-formats button svg {
+  fill: #555; /* Icon color */
+}
+
+/* Style for active or selected buttons */
+.ql-toolbar .ql-formats .ql-active {
+  color: #0056b3; /* Active button color */
+  background-color: #e6e6ff; /* Active button background */
+}
+
+/* Dropdown color customization */
+.ql-toolbar .ql-picker-label {
+  color: #333;
+}
+
+/* Dropdown options color */
+.ql-toolbar .ql-picker-options .ql-picker-item {
+  color: #555;
+}
+
+.ql-toolbar .ql-picker-options .ql-picker-item.ql-selected {
+  background-color: #e6e6ff;
+  color: #0056b3;
+}
+
+/* Mapa aulas agenda */
+.fc-theme-standard .fc-list-day-cushion {
+  background-color: var(--background-alt) !important;
+}
+
+/* TODO APLICAR MODIFICAÇÃO PARA SCROLL BAR NA APP GLOBAL */
