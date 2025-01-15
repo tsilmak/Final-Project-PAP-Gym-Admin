@@ -65,10 +65,10 @@ const navItemsNutricionista = [
 ];
 
 const navItemsTreinador = [
-  { text: "Dashboard", icon: <HomeOutlined /> },
   { text: "Aulas", icon: <CalendarMonthIcon /> },
   { text: "Clientes", icon: <Groups2Outlined /> },
   { text: "Mensagens", icon: <Message /> },
+  { text: "Blog", icon: <BookIcon /> },
 ];
 
 // Utility function to get the base path
