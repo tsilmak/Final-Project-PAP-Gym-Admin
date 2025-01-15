@@ -1,5 +1,6 @@
 import express from "express";
 import SignaturesController from "../controllers/signatures.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 

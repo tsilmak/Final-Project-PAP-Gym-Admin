@@ -1,5 +1,6 @@
 import { Router } from "express";
 import GymPlansController from "../controllers/gymPlans.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
 const router = Router();
 

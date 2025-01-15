@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ExerciseController from "../controllers/exercise.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
 const router = Router();
 

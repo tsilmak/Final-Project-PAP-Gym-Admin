@@ -1,5 +1,6 @@
 import express from "express";
 import UploadController from "../controllers/upload.js";
+import verifyJWT from "../middleware/verifyJWT.js";
 
 const router = express.Router();
 
