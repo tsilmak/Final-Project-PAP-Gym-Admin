@@ -64,6 +64,7 @@ const Maquinas = () => {
             (key) => MachineTypeDisplay[key] === machineType
           ))
   );
+  const machineTypesToSelect = ["Cardio", "Musculacao", "Funcional"];
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -260,7 +261,7 @@ const Maquinas = () => {
               onChange={(e) => setNewMachineType(e.target.value)}
               label="Tipo de Máquina"
             >
-              {Object.values(MachineTypeDisplay).map((type) => (
+              {Object.values(machineTypesToSelect).map((type) => (
                 <MenuItem key={type} value={type}>
                   {type}
                 </MenuItem>
