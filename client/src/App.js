@@ -138,16 +138,6 @@ function App() {
             <Route path="/pagamentos/:id" element={<PaymentsByIdPage />} />
 
             <Route path="/funcionarios" element={<EmployeesPage />} />
-
-            <Route path="/maquinas" element={<Maquinas />} />
-            <Route path="/maquinas/:maquinaId" element={<MaquinaById />} />
-
-            <Route path="/exercicios" element={<Exercicios />} />
-            <Route path="/exercicios/criar" element={<CriarExercicio />} />
-            <Route
-              path="/exercicios/:exercicioId"
-              element={<ExercicioById />}
-            />
           </Route>
         </Route>
 
@@ -190,6 +180,14 @@ function App() {
             path="/clientes/:userId"
             element={<ClienteTreinadorIndividual />}
           />
+
+          <Route path="/exercicios" element={<Exercicios />} />
+          <Route path="/exercicios/criar" element={<CriarExercicio />} />
+          <Route path="/exercicios/:exercicioId" element={<ExercicioById />} />
+
+          {/* apenas para efeitos de exemplo, o treinador não consegue criar máquinas ou eliminar */}
+          <Route path="/maquinas" element={<Maquinas />} />
+          <Route path="/maquinas/:maquinaId" element={<MaquinaById />} />
         </Route>
         {/* PARA TODOS */}
         <Route

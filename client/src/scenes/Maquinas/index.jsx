@@ -188,9 +188,10 @@ const Maquinas = () => {
                   alt={machine.name}
                   sx={{
                     height: 250,
-                    objectFit: "cover",
+                    objectFit: "contain",
                     objectPosition: "center",
-                    width: "100%",
+                    backgroundColor: "#f5f5f5",
+                    padding: "1rem",
                   }}
                 />
                 <CardContent

@@ -2,11 +2,19 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const ErrorOverlay = ({ error, dataName, isButtonVisible = true }) => {
+const ErrorOverlay = ({
+  error = {},
+  dataName = "dados",
+  isButtonVisible = true,
+}) => {
   const navigate = useNavigate();
-  const errorStatus = error.status || "Status desconhecido";
-  const errorMessage = error.data?.message || "Erro desconhecido";
-  console.error(error);
+
+  // Safely access error properties with optional chaining
+  const errorStatus = error?.status || "Status desconhecido";
+  const errorMessage = error?.data?.message || "Erro desconhecido";
+
+  console.error("Error details:", error);
+
   return (
     <Box
       sx={{

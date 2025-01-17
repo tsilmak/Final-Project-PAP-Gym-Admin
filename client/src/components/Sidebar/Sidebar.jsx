@@ -69,6 +69,8 @@ const navItemsTreinador = [
   { text: "Clientes", icon: <Groups2Outlined /> },
   { text: "Mensagens", icon: <Message /> },
   { text: "Blog", icon: <BookIcon /> },
+  { text: "Máquinas", icon: <FitnessCenter /> },
+  { text: "Exercícios", icon: <FitnessCenter /> },
 ];
 
 // Utility function to get the base path
