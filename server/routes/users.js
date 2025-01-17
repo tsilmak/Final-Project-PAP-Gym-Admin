@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get(
   "/roles",
-  verifyJWT(["Administrador", "Nutricionista"]),
+  verifyJWT(["Administrador", "Treinador"]),
   UserController.getRoles
 );
 router.get(

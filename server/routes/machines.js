@@ -11,13 +11,13 @@ router.post(
 
 router.get(
   "/all",
-  verifyJWT(["Administrador"]),
+  verifyJWT(["Administrador", "Treinador"]),
   MachineController.getAllMachines
 );
 
 router.get(
   "/:MachineId",
-  verifyJWT(["Administrador"]),
+  verifyJWT(["Administrador", "Treinador"]),
   MachineController.getMachineById
 );
 router.delete(
