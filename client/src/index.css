@@ -123,5 +123,16 @@ body,
 .fc-theme-standard .fc-list-day-cushion {
   background-color: var(--background-alt) !important;
 }
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Adjust this to make the scrollbar thinner */
+}
 
-/* TODO APLICAR MODIFICAÇÃO PARA SCROLL BAR NA APP GLOBAL */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3498db;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #ecf0f1;
+  border-radius: 10px;
+}

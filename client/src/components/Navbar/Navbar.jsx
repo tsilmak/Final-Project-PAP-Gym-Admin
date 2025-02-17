@@ -38,12 +38,12 @@ const Navbar = ({ user, fname, lname, role, profilePicture }) => {
   const handleClose = () => setAnchorEl(null);
   const handleLogout = async () => {
     try {
+      dispatch(logOut()); // Clear the auth state in Redux
+      navigate("/login");
       await logout().unwrap();
-      dispatch(logOut()); // Clear the auth state in Redux
-      navigate("/login");
     } catch (error) {
-      dispatch(logOut()); // Clear the auth state in Redux
       navigate("/login");
+      dispatch(logOut()); // Clear the auth state in Redux
     }
   };
 

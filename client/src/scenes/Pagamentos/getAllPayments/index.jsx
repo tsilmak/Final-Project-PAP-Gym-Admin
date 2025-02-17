@@ -95,14 +95,14 @@ const PaymentsPage = () => {
     return (
       <ErrorOverlay error={errorPayments} dataName={"Todos os pagamentos"} />
     );
-  console.log(dataPayments);
+
   return (
     <>
       <Header title="Pagamentos" subtitle={"Visualize os pagamentos"} />
 
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      <Box sx={{ ml: "5rem", mr: "5rem" }}>
+      <Box sx={{ ml: "5rem", mr: "5rem", mx: { xs: "1rem", md: "5rem" } }}>
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <FormControl sx={{ minWidth: 120 }}>
             <InputLabel>Mês</InputLabel>
@@ -141,77 +141,81 @@ const PaymentsPage = () => {
           </FormControl>
         </Box>
 
-        <Table size="small">
-          <TableHead>
-            <TableRow sx={{ backgroundColor: theme.palette.primary.main }}>
-              <TableCell>ID do Pagamento</TableCell>
-              <TableCell>Nome do Cliente</TableCell>
-              <TableCell>Data do Pagamento</TableCell>
-              <TableCell>Valor</TableCell>
-              <TableCell>Estado</TableCell>
-              <TableCell>Ação</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isLoadingPayments ? (
-              <TableRow>
-                <TableCell
-                  colSpan={6}
-                  align="center"
-                  sx={{ backgroundColor: theme.palette.background.alt }}
-                >
-                  <Loading />
-                </TableCell>
+        <Box sx={{ overflowX: "auto", width: "100%" }}>
+          <Table size="small">
+            <TableHead>
+              <TableRow sx={{ backgroundColor: theme.palette.primary.main }}>
+                <TableCell>ID do Pagamento</TableCell>
+                <TableCell>Nome do Cliente</TableCell>
+                <TableCell>Data do Pagamento</TableCell>
+                <TableCell>Valor</TableCell>
+                <TableCell>Estado</TableCell>
+                <TableCell>Ação</TableCell>
               </TableRow>
-            ) : displayedRows.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={6}
-                  align="center"
-                  sx={{ backgroundColor: theme.palette.background.alt }}
-                >
-                  <Typography color="textSecondary">
-                    Nenhum pagamento encontrado
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            ) : (
-              displayedRows.map((dataPayments) => (
-                <TableRow
-                  key={dataPayments.paymentId}
-                  sx={{ backgroundColor: theme.palette.background.alt }}
-                >
-                  <TableCell>{dataPayments.paymentId}</TableCell>
-                  <TableCell>
-                    {dataPayments.signature.user.fname +
-                      " " +
-                      dataPayments.signature.user.fname}
+            </TableHead>
+            <TableBody>
+              {isLoadingPayments ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    align="center"
+                    sx={{ backgroundColor: theme.palette.background.alt }}
+                  >
+                    <Loading />
                   </TableCell>
-                  <TableCell>{FormatDate(dataPayments.date)}</TableCell>
-                  <TableCell>{dataPayments.amount.toFixed(2) + "€"}</TableCell>
-                  <TableCell>
-                    {dataPayments.paymentStatus.paymentStatusName}
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      color="secondary"
-                      sx={{
-                        cursor: "pointer",
-                        display: "inline-block",
-                        "&:hover": {
-                          boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
-                        },
-                      }}
-                      onClick={() => handleNavigate(dataPayments.paymentId)}
-                    >
-                      Rever
+                </TableRow>
+              ) : displayedRows.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    align="center"
+                    sx={{ backgroundColor: theme.palette.background.alt }}
+                  >
+                    <Typography color="textSecondary">
+                      Nenhum pagamento encontrado
                     </Typography>
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+              ) : (
+                displayedRows.map((dataPayments) => (
+                  <TableRow
+                    key={dataPayments.paymentId}
+                    sx={{ backgroundColor: theme.palette.background.alt }}
+                  >
+                    <TableCell>{dataPayments.paymentId}</TableCell>
+                    <TableCell>
+                      {dataPayments.signature.user.fname +
+                        " " +
+                        dataPayments.signature.user.fname}
+                    </TableCell>
+                    <TableCell>{FormatDate(dataPayments.date)}</TableCell>
+                    <TableCell>
+                      {dataPayments.amount.toFixed(2) + "€"}
+                    </TableCell>
+                    <TableCell>
+                      {dataPayments.paymentStatus.paymentStatusName}
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        color="secondary"
+                        sx={{
+                          cursor: "pointer",
+                          display: "inline-block",
+                          "&:hover": {
+                            boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
+                          },
+                        }}
+                        onClick={() => handleNavigate(dataPayments.paymentId)}
+                      >
+                        Rever
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </Box>
 
         {totalPages > 1 && (
           <Box

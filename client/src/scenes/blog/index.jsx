@@ -471,7 +471,14 @@ const Blog = () => {
         title="Blog"
         subtitle="Veja, crie edite os últimos blogs escritos."
       />
-      <Box sx={{ mx: "5rem", display: "flex" }}>
+      <Box
+        sx={{
+          ml: "5rem",
+          display: "flex",
+          mr: "5rem",
+          mx: { xs: "1rem", md: "5rem" },
+        }}
+      >
         {/* Blog Section */}
         <Box sx={{ flexGrow: 1 }}>
           {/* Blog Search */}

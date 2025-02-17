@@ -120,7 +120,16 @@ const Sidebar = ({ drawerWidth, isNonMobile }) => {
 
   return (
     <Box>
-      <Box component="nav">
+      <Box
+        component="nav"
+        sx={{
+          overflow: "auto",
+          backgroundColor: (theme) => theme.palette.background.alt,
+          scrollbarColor: `${(theme) => theme.palette.text.primary} ${(theme) =>
+            theme.palette.secondary[200].default}`,
+        }}
+        className="custom-scrollbar"
+      >
         <Drawer
           open={isSidebarOpen}
           onClose={() => dispatch(setSideBar(false))}
