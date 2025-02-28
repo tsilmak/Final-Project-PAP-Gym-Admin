@@ -5,7 +5,7 @@ import verifyJWT from "../middleware/verifyJWT.js";
 const router = Router();
 router.post(
   "/add",
-  verifyJWT(["Administrador"]),
+  verifyJWT(["Administrador", "Treinador"]),
   MachineController.createMachine
 );
 
