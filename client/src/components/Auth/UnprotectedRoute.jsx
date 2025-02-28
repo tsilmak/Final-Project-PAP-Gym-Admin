@@ -7,12 +7,17 @@ const UnProtectedRoute = ({ children }) => {
   const token = useSelector(selectCurrentToken);
   const user = useSelector(selectCurrentUser);
 
-  // Ensure that 'user' exists before checking properties
-  if (token || user) {
-    return <Navigate to="/" replace />;
+  // If token exists and user has a role, redirect based on role
+  if (token && user?.role) {
+    if (user.role === "Treinador") {
+      return <Navigate to="/clientes" replace />;
+    }
+    if (user.role === "Administrador") {
+      return <Navigate to="/" replace />;
+    }
   }
 
-  // Render the children if not authenticated
+  // Render children if no token or no matching role
   return children;
 };
 

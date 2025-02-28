@@ -28,6 +28,8 @@ import {
   InputBase,
   CircularProgress,
   DialogContentText,
+  useTheme,
+  Pagination, // Added missing import
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import {
@@ -74,13 +76,18 @@ const formatDate = (dateString) => {
 };
 
 const PersonalInfo = ({ userData, getInitials }) => {
+  const theme = useTheme();
+
   if (!userData) {
     return (
       <Grid item xs={12} md={6}>
-        <Card variant="outlined">
+        <Card
+          variant="outlined"
+          sx={{ bgcolor: theme.palette.background.paper }}
+        >
           <CardContent>
             <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-              <CircularProgress />
+              <CircularProgress color="primary" />
             </Box>
           </CardContent>
         </Card>
@@ -94,7 +101,7 @@ const PersonalInfo = ({ userData, getInitials }) => {
 
   return (
     <Grid item xs={12} md={6}>
-      <Card variant="outlined">
+      <Card variant="outlined" sx={{ bgcolor: theme.palette.background.paper }}>
         <CardContent>
           <Box
             sx={{
@@ -112,74 +119,96 @@ const PersonalInfo = ({ userData, getInitials }) => {
                 height: 120,
                 mb: 2,
                 fontSize: "2.5rem",
-                bgcolor: "primary.main",
+                bgcolor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
               }}
             >
               {getInitials(userData.fname, userData.lname)}
             </Avatar>
-            <Typography variant="h6" align="center" gutterBottom>
+            <Typography
+              variant="h6"
+              align="center"
+              gutterBottom
+              color={theme.palette.text.primary}
+            >
               {`${userData.fname || ""} ${userData.lname || ""}`}
             </Typography>
-            <Typography color="textSecondary" align="center">
+            <Typography color={theme.palette.text.secondary} align="center">
               #{userData.membershipNumber || "N/A"}
             </Typography>
           </Box>
           <Stack spacing={2}>
             <Box>
-              <Typography color="textSecondary">Primeiro Nome</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Primeiro Nome
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {userData.fname || "Não disponível"}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">Segundo Nome</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Segundo Nome
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {userData.lname || "Não disponível"}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">Email</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Email
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {userData.email || "Não disponível"}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">Telemovel</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Telemovel
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {userData.phoneNumber
                   ? `+${userData.phoneNumber}`
                   : "Não disponível"}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">Data de Nascimento</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Data de Nascimento
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {formatDate(userData.birthDate)}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">Género</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Género
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {userData.gender || "Não disponível"}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">
+              <Typography color={theme.palette.text.secondary}>
                 Status da assinatura
               </Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {membershipStatus || "Não disponível"}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">Plano de Treino</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Plano de Treino
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {gymPlanName || "Não disponível"}
               </Typography>
             </Box>
             <Box>
-              <Typography color="textSecondary">Membro desde</Typography>
-              <Typography variant="body1">
+              <Typography color={theme.palette.text.secondary}>
+                Membro desde
+              </Typography>
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {formatDate(userData.createdAt)}
               </Typography>
             </Box>
@@ -199,9 +228,11 @@ const MetricField = ({
   metrics,
   handleMetricChange,
 }) => {
+  const theme = useTheme();
+
   return isEditing ? (
     <Box>
-      <Typography color="textSecondary">{label}</Typography>
+      <Typography color={theme.palette.text.secondary}>{label}</Typography>
       <TextField
         size="small"
         value={metrics[field] || ""}
@@ -213,14 +244,16 @@ const MetricField = ({
           pattern: "[0-9]*[.]?[0-9]*",
         }}
         InputProps={{
-          endAdornment: <Typography>{unit}</Typography>,
+          endAdornment: (
+            <Typography color={theme.palette.text.secondary}>{unit}</Typography>
+          ),
         }}
       />
     </Box>
   ) : (
     <Box>
-      <Typography color="textSecondary">{label}</Typography>
-      <Typography variant="body1">
+      <Typography color={theme.palette.text.secondary}>{label}</Typography>
+      <Typography variant="body1" color={theme.palette.text.primary}>
         {value ? `${value} ${unit}` : "Não disponível"}
       </Typography>
     </Box>
@@ -237,6 +270,7 @@ const MetricsCard = ({
   handleCancel,
   userId,
 }) => {
+  const theme = useTheme();
   const [showHistory, setShowHistory] = useState(false);
   const {
     data: evaluationHistory,
@@ -244,14 +278,16 @@ const MetricsCard = ({
     refetch: refetchEvaluationHistory,
   } = useGetMetricsByUserIdQuery(userId);
 
-  // Get the latest metrics safely
   const latestMetrics = data?.bodyMetrics?.[0];
   const evaluator = latestMetrics?.appointmentMadeBy;
 
   if (showHistory) {
     return (
       <Grid item xs={12} md={6}>
-        <Card variant="outlined">
+        <Card
+          variant="outlined"
+          sx={{ bgcolor: theme.palette.background.paper }}
+        >
           <CardContent>
             <Box
               sx={{
@@ -263,12 +299,15 @@ const MetricsCard = ({
             >
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <ScaleIcon sx={{ mr: 1 }} color="primary" />
-                <Typography variant="h6">Histórico de Avaliações</Typography>
+                <Typography variant="h6" color={theme.palette.text.primary}>
+                  Histórico de Avaliações
+                </Typography>
               </Box>
               <Button
                 startIcon={<ArrowBackIcon />}
                 onClick={() => setShowHistory(false)}
                 variant="outlined"
+                sx={{ color: theme.palette.text.primary }}
               >
                 Voltar
               </Button>
@@ -276,10 +315,13 @@ const MetricsCard = ({
 
             {isLoadingEvaluationHistory ? (
               <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-                <CircularProgress />
+                <CircularProgress color="primary" />
               </Box>
             ) : !evaluationHistory?.length ? (
-              <Typography sx={{ textAlign: "center", p: 3 }}>
+              <Typography
+                sx={{ textAlign: "center", p: 3 }}
+                color={theme.palette.text.secondary}
+              >
                 Nenhum histórico disponível
               </Typography>
             ) : (
@@ -287,23 +329,45 @@ const MetricsCard = ({
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell>Data</TableCell>
-                      <TableCell>Avaliador</TableCell>
-                      <TableCell>Peso (kg)</TableCell>
-                      <TableCell>Altura (cm)</TableCell>
-                      <TableCell>Cintura (cm)</TableCell>
-                      <TableCell>Quadril (cm)</TableCell>
-                      <TableCell>Coxa (cm)</TableCell>
-                      <TableCell>Peito (cm)</TableCell>
-                      <TableCell>Bicep (cm)</TableCell>
-                      <TableCell>% Gordura</TableCell>
-                      <TableCell>Massa Muscular (kg)</TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Data
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Avaliador
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Peso (kg)
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Altura (cm)
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Cintura (cm)
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Quadril (cm)
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Coxa (cm)
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Peito (cm)
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Bicep (cm)
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        % Gordura
+                      </TableCell>
+                      <TableCell sx={{ color: theme.palette.text.primary }}>
+                        Massa Muscular (kg)
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {evaluationHistory.map((evaluation, index) => (
                       <TableRow key={index}>
-                        <TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
                           {evaluation?.appointmentDate
                             ? new Date(
                                 evaluation.appointmentDate
@@ -314,22 +378,38 @@ const MetricsCard = ({
                               })
                             : "Data não disponível"}
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
                           {evaluation?.appointmentMadeBy
                             ? `${evaluation.appointmentMadeBy.fname} ${evaluation.appointmentMadeBy.lname}`
                             : "Não disponível"}
                         </TableCell>
-                        <TableCell>{evaluation?.weight || "N/A"}</TableCell>
-                        <TableCell>{evaluation?.height || "N/A"}</TableCell>
-                        <TableCell>{evaluation?.waist || "N/A"}</TableCell>
-                        <TableCell>{evaluation?.hip || "N/A"}</TableCell>
-                        <TableCell>{evaluation?.thigh || "N/A"}</TableCell>
-                        <TableCell>{evaluation?.chest || "N/A"}</TableCell>
-                        <TableCell>{evaluation?.biceps || "N/A"}</TableCell>
-                        <TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.weight || "N/A"}
+                        </TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.height || "N/A"}
+                        </TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.waist || "N/A"}
+                        </TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.hip || "N/A"}
+                        </TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.thigh || "N/A"}
+                        </TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.chest || "N/A"}
+                        </TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.biceps || "N/A"}
+                        </TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
                           {evaluation?.fatPercentage || "N/A"}
                         </TableCell>
-                        <TableCell>{evaluation?.muscleMass || "N/A"}</TableCell>
+                        <TableCell sx={{ color: theme.palette.text.primary }}>
+                          {evaluation?.muscleMass || "N/A"}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -344,7 +424,7 @@ const MetricsCard = ({
 
   return (
     <Grid item xs={12} md={6}>
-      <Card variant="outlined">
+      <Card variant="outlined" sx={{ bgcolor: theme.palette.background.paper }}>
         <CardContent>
           <Box
             sx={{
@@ -356,14 +436,16 @@ const MetricsCard = ({
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <ScaleIcon sx={{ mr: 1 }} color="primary" />
-              <Typography variant="h6">Métricas Corporais</Typography>
+              <Typography variant="h6" color={theme.palette.text.primary}>
+                Métricas Corporais
+              </Typography>
             </Box>
           </Box>
           <Box sx={{ mb: 2 }}>
             <Button
               variant="outlined"
               onClick={() => setShowHistory(true)}
-              sx={{ mr: 1 }}
+              sx={{ mr: 1, color: theme.palette.text.primary }}
             >
               Histórico de Avaliação
             </Button>
@@ -404,10 +486,10 @@ const MetricsCard = ({
 
           <Stack spacing={2}>
             <Box>
-              <Typography color="textSecondary">
+              <Typography color={theme.palette.text.secondary}>
                 Data da Última Avaliação
               </Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 {latestMetrics?.appointmentDate
                   ? new Date(latestMetrics.appointmentDate).toLocaleDateString(
                       "pt-BR",
@@ -419,7 +501,7 @@ const MetricsCard = ({
                     )
                   : "Não realizado"}
               </Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" color={theme.palette.text.primary}>
                 Realizada por:{" "}
                 {evaluator
                   ? `${evaluator.fname} ${evaluator.lname}`
@@ -446,8 +528,8 @@ const MetricsCard = ({
               handleMetricChange={handleMetricChange}
             />
 
-            <Divider />
-            <Typography variant="subtitle2" color="primary">
+            <Divider sx={{ bgcolor: theme.palette.divider }} />
+            <Typography variant="subtitle2" color={theme.palette.primary.main}>
               Circunferências Corporais
             </Typography>
 
@@ -497,7 +579,7 @@ const MetricsCard = ({
               handleMetricChange={handleMetricChange}
             />
 
-            <Divider />
+            <Divider sx={{ bgcolor: theme.palette.divider }} />
             <MetricField
               label="Frequência Cardíaca de Repouso"
               value={latestMetrics?.restingHeartRate || ""}
@@ -531,29 +613,9 @@ const MetricsCard = ({
     </Grid>
   );
 };
-// Mock data for exercises
-const exerciseDatabase = [
-  { id: 1, name: "Supino Reto", muscle: "Peito", equipment: "Barra" },
-  { id: 2, name: "Agachamento", muscle: "Pernas", equipment: "Barra" },
-  { id: 3, name: "Puxada na Frente", muscle: "Costas", equipment: "Máquina" },
-  { id: 4, name: "Rosca Direta", muscle: "Bíceps", equipment: "Barra W" },
-  { id: 5, name: "Extensão Triceps", muscle: "Tríceps", equipment: "Corda" },
-];
-
-// Mock data f<or existing training plans
-const mockTrainingPlans = [
-  {
-    id: 1,
-    name: "Treino A - Superior",
-    exercises: [
-      { id: 1, sets: 4, reps: 12, weight: 60 },
-      { id: 4, sets: 3, reps: 15, weight: 20 },
-    ],
-  },
-];
 
 const TrainingPlans = ({ userId }) => {
-  // API Hooks
+  const theme = useTheme();
   const { data: dataExercises, isLoading: isLoadingExercises } =
     useGetAllExercisesQuery();
   const { data: userWorkoutPlan, isLoading: isLoadingPlans } =
@@ -566,7 +628,6 @@ const TrainingPlans = ({ userId }) => {
   const [editUserWorkoutPlan] = useEditUserWorkoutPlanMutation();
   const [deleteUserWorkoutPlan] = useDeleteUserWorkoutPlanMutation();
 
-  // Local State
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [expandedPlan, setExpandedPlan] = useState(null);
@@ -583,7 +644,6 @@ const TrainingPlans = ({ userId }) => {
 
   const [editingPlan, setEditingPlan] = useState(null);
 
-  // Filtering and Pagination
   const filteredExercises =
     dataExercises?.filter(
       (exercise) =>
@@ -603,7 +663,6 @@ const TrainingPlans = ({ userId }) => {
     startIndex + exercisesPerPage
   );
 
-  // Handlers
   const handlePageChange = (event, newPage) => {
     setPage(newPage);
   };
@@ -647,7 +706,6 @@ const TrainingPlans = ({ userId }) => {
       setIsEditing(false);
       setEditingPlan(null);
       refetchUserWorkoutPlan();
-      console.log("Workout plan updated successfully");
     } catch (error) {
       console.error("Failed to edit workout plan:", error);
     }
@@ -662,7 +720,6 @@ const TrainingPlans = ({ userId }) => {
     try {
       await deleteUserWorkoutPlan(planToDelete).unwrap();
       refetchUserWorkoutPlan();
-      console.log("Workout plan deleted successfully");
     } catch (error) {
       console.error("Failed to delete workout plan:", error);
     } finally {
@@ -730,14 +787,11 @@ const TrainingPlans = ({ userId }) => {
           weight: parseInt(exercise.weight),
         })),
       };
-      console.log(workoutPlanData);
       await createWorkoutPlan(workoutPlanData).unwrap();
-      console.log("Plano de treino criado com sucesso!");
       refetchUserWorkoutPlan();
       handleDialogClose();
     } catch (error) {
       console.error("Failed to create workout plan:", error);
-      console.log(error.data?.message || "Erro ao criar plano de treino");
     }
   };
 
@@ -756,7 +810,7 @@ const TrainingPlans = ({ userId }) => {
   if (isLoadingExercises || isLoadingPlans) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-        <CircularProgress />
+        <CircularProgress color="primary" />
       </Box>
     );
   }
@@ -764,8 +818,13 @@ const TrainingPlans = ({ userId }) => {
   const activePlan = isEditing ? editingPlan : newPlan;
 
   return (
-    <Paper elevation={3} sx={{ p: 3 }}>
-      {/* Header */}
+    <Paper
+      elevation={3}
+      sx={{
+        p: 3,
+        bgcolor: theme.palette.background.paper,
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -776,7 +835,11 @@ const TrainingPlans = ({ userId }) => {
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <DumbbellIcon color="primary" />
-          <Typography variant="h5" component="h2">
+          <Typography
+            variant="h5"
+            component="h2"
+            color={theme.palette.text.primary}
+          >
             Planos de Treino do cliente
           </Typography>
         </Box>
@@ -784,19 +847,22 @@ const TrainingPlans = ({ userId }) => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setIsCreating(true)}
+          sx={{ bgcolor: theme.palette.primary.main }}
         >
           Novo Treino
         </Button>
       </Box>
 
-      {/* Create/Edit Plan Dialog */}
       <Dialog
         open={isCreating || isEditing}
         onClose={handleDialogClose}
         maxWidth="md"
         fullWidth
+        PaperProps={{
+          sx: { bgcolor: theme.palette.background.paper },
+        }}
       >
-        <DialogTitle>
+        <DialogTitle sx={{ color: theme.palette.text.primary }}>
           {isEditing
             ? "Editar Plano de Treino"
             : "Criar um novo Plano de Treino"}
@@ -814,15 +880,18 @@ const TrainingPlans = ({ userId }) => {
               }
             />
 
-            {/* Exercise Search */}
-            <Typography variant="h6" sx={{ mt: 1 }}>
+            <Typography
+              variant="h6"
+              sx={{ mt: 1 }}
+              color={theme.palette.text.primary}
+            >
               Adicionar Exercícios
             </Typography>
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
-                backgroundColor: (theme) => theme.palette.background.alt,
+                backgroundColor: theme.palette.background.alt,
                 borderRadius: "10px",
                 p: "0.1rem 1.5rem",
                 width: "100%",
@@ -836,13 +905,13 @@ const TrainingPlans = ({ userId }) => {
                   setPage(1);
                 }}
                 fullWidth
+                sx={{ color: theme.palette.text.primary }}
               />
               <IconButton>
-                <Search />
+                <Search sx={{ color: theme.palette.text.primary }} />
               </IconButton>
             </Box>
 
-            {/* Exercise Grid */}
             <Grid container spacing={2}>
               {paginatedExercises.map((exercise) => (
                 <Grid item xs={12} sm={6} key={exercise.exerciseId}>
@@ -850,7 +919,8 @@ const TrainingPlans = ({ userId }) => {
                     variant="outlined"
                     sx={{
                       cursor: "pointer",
-                      "&:hover": { bgcolor: "action.hover" },
+                      "&:hover": { bgcolor: theme.palette.action.hover },
+                      bgcolor: theme.palette.background.paper,
                     }}
                     onClick={() => addExerciseToPlan(exercise)}
                   >
@@ -859,15 +929,25 @@ const TrainingPlans = ({ userId }) => {
                     >
                       <Avatar
                         variant="rounded"
-                        sx={{ width: 80, height: 80, bgcolor: "grey.200" }}
+                        sx={{
+                          width: 80,
+                          height: 80,
+                          bgcolor: theme.palette.grey[200],
+                        }}
                         src={exercise.imageUrl}
                         alt={exercise.name}
                       />
                       <Box>
-                        <Typography variant="subtitle1">
+                        <Typography
+                          variant="subtitle1"
+                          color={theme.palette.text.primary}
+                        >
                           {exercise.name}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography
+                          variant="body2"
+                          color={theme.palette.text.secondary}
+                        >
                           {exercise.targetMuscle} - {exercise.equipment.name}
                         </Typography>
                       </Box>
@@ -877,7 +957,6 @@ const TrainingPlans = ({ userId }) => {
               ))}
             </Grid>
 
-            {/* Pagination */}
             {filteredExercises.length > exercisesPerPage && (
               <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                 <Pagination
@@ -889,14 +968,28 @@ const TrainingPlans = ({ userId }) => {
               </Box>
             )}
 
-            {/* Selected Exercises */}
             {activePlan.exercises.length > 0 && (
               <Box sx={{ mt: 2 }}>
-                <Typography variant="h6">Exercícios Selecionados</Typography>
+                <Typography variant="h6" color={theme.palette.text.primary}>
+                  Exercícios Selecionados
+                </Typography>
                 {activePlan.exercises.map((exercise, index) => (
-                  <Card key={index} variant="outlined" sx={{ mt: 1, p: 2 }}>
+                  <Card
+                    key={index}
+                    variant="outlined"
+                    sx={{
+                      mt: 1,
+                      p: 2,
+                      bgcolor: theme.palette.background.paper,
+                    }}
+                  >
                     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                      <Typography sx={{ flex: 1 }}>{exercise.name}</Typography>
+                      <Typography
+                        sx={{ flex: 1 }}
+                        color={theme.palette.text.primary}
+                      >
+                        {exercise.name}
+                      </Typography>
                       <TextField
                         label="Séries"
                         type="number"
@@ -941,7 +1034,11 @@ const TrainingPlans = ({ userId }) => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialogClose} disabled={isCreatingPlan}>
+          <Button
+            onClick={handleDialogClose}
+            disabled={isCreatingPlan}
+            sx={{ color: theme.palette.text.primary }}
+          >
             Cancelar
           </Button>
           <Button
@@ -952,10 +1049,11 @@ const TrainingPlans = ({ userId }) => {
               !activePlan.name ||
               activePlan.exercises.length === 0
             }
+            sx={{ bgcolor: theme.palette.primary.main }}
           >
             {isCreatingPlan ? (
               <>
-                <CircularProgress size={24} sx={{ mr: 1 }} />
+                <CircularProgress size={24} sx={{ mr: 1, color: "white" }} />
                 Salvando...
               </>
             ) : isEditing ? (
@@ -967,20 +1065,29 @@ const TrainingPlans = ({ userId }) => {
         </DialogActions>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog
         open={deleteConfirmOpen}
         onClose={() => setDeleteConfirmOpen(false)}
+        PaperProps={{
+          sx: { bgcolor: theme.palette.background.paper },
+        }}
       >
-        <DialogTitle>Confirmar Eliminação</DialogTitle>
+        <DialogTitle sx={{ color: theme.palette.text.primary }}>
+          Confirmar Eliminação
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText sx={{ color: theme.palette.text.primary }}>
             Tem certeza que deseja eliminar este plano de treino? Esta ação não
             pode ser desfeita.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDeleteConfirmOpen(false)}>Cancelar</Button>
+          <Button
+            onClick={() => setDeleteConfirmOpen(false)}
+            sx={{ color: theme.palette.text.primary }}
+          >
+            Cancelar
+          </Button>
           <Button
             onClick={handleConfirmDelete}
             color="error"
@@ -991,10 +1098,15 @@ const TrainingPlans = ({ userId }) => {
         </DialogActions>
       </Dialog>
 
-      {/* Existing Plans List */}
       <Box sx={{ mt: 3 }}>
         {userWorkoutPlan?.map((plan) => (
-          <Card key={plan.workoutPlanId} sx={{ mb: 2 }}>
+          <Card
+            key={plan.workoutPlanId}
+            sx={{
+              mb: 2,
+              bgcolor: theme.palette.background.paper,
+            }}
+          >
             <CardContent>
               <Box
                 sx={{
@@ -1008,12 +1120,20 @@ const TrainingPlans = ({ userId }) => {
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   <EventIcon color="primary" />
                   <Box>
-                    <Typography variant="h6">{plan.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="h6" color={theme.palette.text.primary}>
+                      {plan.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color={theme.palette.text.secondary}
+                    >
                       Criada no dia:{" "}
                       {new Date(plan.createdAt).toLocaleDateString()}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      color={theme.palette.text.secondary}
+                    >
                       Criada por: {plan.madeByUser.fname}{" "}
                       {plan.madeByUser.lname}
                     </Typography>
@@ -1021,21 +1141,29 @@ const TrainingPlans = ({ userId }) => {
                 </Box>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                   {expandedPlan === plan.workoutPlanId ? (
-                    <ExpandLessIcon />
+                    <ExpandLessIcon
+                      sx={{ color: theme.palette.text.primary }}
+                    />
                   ) : (
-                    <ExpandMoreIcon />
+                    <ExpandMoreIcon
+                      sx={{ color: theme.palette.text.primary }}
+                    />
                   )}
                 </Box>
               </Box>
 
               <Collapse in={expandedPlan === plan.workoutPlanId}>
-                <Divider sx={{ my: 2 }} />
+                <Divider sx={{ my: 2, bgcolor: theme.palette.divider }} />
                 <Box sx={{ mt: 2 }}>
                   {plan.exercises.map((exercise) => (
                     <Card
                       key={exercise.id}
                       variant="outlined"
-                      sx={{ mb: 1, p: 2 }}
+                      sx={{
+                        mb: 1,
+                        p: 2,
+                        bgcolor: theme.palette.background.paper,
+                      }}
                     >
                       <Box
                         sx={{
@@ -1045,18 +1173,30 @@ const TrainingPlans = ({ userId }) => {
                         }}
                       >
                         <Box>
-                          <Typography variant="subtitle1">
+                          <Typography
+                            variant="subtitle1"
+                            color={theme.palette.text.primary}
+                          >
                             {exercise.exercise.name}
                           </Typography>
-                          <Typography variant="body2" color="text.secondary">
+                          <Typography
+                            variant="body2"
+                            color={theme.palette.text.secondary}
+                          >
                             {exercise.exercise.targetMuscle} -{" "}
                             {exercise.exercise.exerciseType}
                           </Typography>
                         </Box>
                         <Box sx={{ display: "flex", gap: 2 }}>
-                          <Typography>{exercise.sets} séries</Typography>
-                          <Typography>{exercise.reps} reps</Typography>
-                          <Typography>{exercise.weight} kg</Typography>
+                          <Typography color={theme.palette.text.primary}>
+                            {exercise.sets} séries
+                          </Typography>
+                          <Typography color={theme.palette.text.primary}>
+                            {exercise.reps} reps
+                          </Typography>
+                          <Typography color={theme.palette.text.primary}>
+                            {exercise.weight} kg
+                          </Typography>
                         </Box>
                       </Box>
                     </Card>
@@ -1074,6 +1214,7 @@ const TrainingPlans = ({ userId }) => {
                       variant="outlined"
                       size="small"
                       onClick={() => handleEditClick(plan)}
+                      sx={{ color: theme.palette.text.primary }}
                     >
                       Editar
                     </Button>
@@ -1098,6 +1239,7 @@ const TrainingPlans = ({ userId }) => {
 };
 
 const ClienteTreinadorIndividual = () => {
+  const theme = useTheme();
   const { userId } = useParams();
   const { data: userData, isLoading } = useGetUserByIdForTreinadorQuery(userId);
   const [updateUserMetrics, { isLoading: isLoadingUpdateUserMetrics }] =
@@ -1117,7 +1259,6 @@ const ClienteTreinadorIndividual = () => {
   });
 
   React.useEffect(() => {
-    // Only update metrics if userData exists and has bodyMetrics array
     if (userData?.bodyMetrics?.length > 0) {
       const latestMetrics = userData.bodyMetrics[0];
       setMetrics({
@@ -1137,12 +1278,10 @@ const ClienteTreinadorIndividual = () => {
 
   const handleMetricChange = (field) => (event) => {
     const value = event.target.value;
-
-    // Only allow numbers and dots, replace commas with dots
     const sanitizedValue = value
-      .replace(/,/g, ".") // Replace commas with dots
-      .replace(/[^\d.]/g, "") // Remove any character that's not a digit or dot
-      .replace(/(\..*)\./g, "$1"); // Allow only one dot
+      .replace(/,/g, ".")
+      .replace(/[^\d.]/g, "")
+      .replace(/(\..*)\./g, "$1");
 
     setMetrics((prev) => ({
       ...prev,
@@ -1152,10 +1291,8 @@ const ClienteTreinadorIndividual = () => {
 
   const handleSave = async () => {
     try {
-      // Show loading state while updating
       if (isLoadingUpdateUserMetrics) return;
 
-      // Validate metrics before sending
       const validatedMetrics = {
         weight: Number(metrics.weight) || null,
         height: Number(metrics.height) || null,
@@ -1169,22 +1306,18 @@ const ClienteTreinadorIndividual = () => {
         muscleMass: Number(metrics.muscleMass) || null,
       };
 
-      // Send update request
       await updateUserMetrics({
         userId: userId,
         metrics: validatedMetrics,
       }).unwrap();
 
-      // Exit edit mode on successful update
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update metrics:", error);
-      // Optionally add error handling UI here
     }
   };
 
   const handleCancel = () => {
-    // Reset to the latest user metrics if available
     if (userData?.bodyMetrics?.length > 0) {
       const latestMetrics = userData.bodyMetrics[0];
       setMetrics({
@@ -1204,7 +1337,7 @@ const ClienteTreinadorIndividual = () => {
   };
 
   if (isLoading) {
-    return <LinearProgress />;
+    return <LinearProgress color="primary" />;
   }
 
   const getInitials = (firstName, lastName) => {
@@ -1218,14 +1351,27 @@ const ClienteTreinadorIndividual = () => {
         subtitle="Gestão e Acompanhamento"
       />
       <Box sx={{ mx: "5rem" }}>
-        <Paper elevation={2} sx={{ p: 3, mb: 4 }}>
+        <Paper
+          elevation={2}
+          sx={{
+            p: 3,
+            mb: 4,
+            borderRadius: 2,
+            bgcolor: theme.palette.background.alt,
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
             <PersonIcon sx={{ mr: 1 }} color="primary" />
-            <Typography variant="h5" component="h2">
+            <Typography
+              variant="h5"
+              component="h2"
+              color={theme.palette.text.primary}
+            >
               Informações do Cliente
             </Typography>
           </Box>
-          <Divider sx={{ mb: 3 }} />
+          <Divider sx={{ mb: 3, bgcolor: theme.palette.divider }} />
 
           <Grid container spacing={3}>
             <PersonalInfo userData={userData} getInitials={getInitials} />

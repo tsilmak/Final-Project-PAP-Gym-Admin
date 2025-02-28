@@ -22,12 +22,13 @@ import SearchBar from "components/common/SearchBar";
 import { useTheme } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import { useGetAllExercisesQuery } from "state/api";
+import Loading from "components/common/Loading";
 
 const ExerciseManagement = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { data } = useGetAllExercisesQuery();
-  console.log(data);
+  const { data, isLoading } = useGetAllExercisesQuery();
+
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -71,6 +72,9 @@ const ExerciseManagement = () => {
   const handleClosePhotoModal = () => {
     setSelectedPhoto(null);
   };
+  if (isLoading) {
+    <Loading />;
+  }
   return (
     <Box>
       <Header title="Exercícios" subtitle="Gere os exercícios do teu ginásio" />
@@ -94,7 +98,7 @@ const ExerciseManagement = () => {
       </Box>
 
       {/* List of filtered exercises */}
-      {filteredExercises.length === 0 ? (
+      {!isLoading && filteredExercises.length === 0 ? (
         <Typography variant="body1" align="center" sx={{ mt: 4 }}>
           Nenhum exercício encontrado
         </Typography>

@@ -34,13 +34,26 @@ const LoginPage = () => {
         email,
         password,
       }).unwrap();
-      dispatch(setCredetials({ accessToken, user }));
-      navigate("/dashboard");
+
+      console.log(user.role);
+      if (user.role === "Administrador") {
+        navigate("/dashboard");
+
+        dispatch(setCredetials({ accessToken, user }));
+      }
+      if (user.role === "Treinador") {
+        navigate("/aulas");
+
+        dispatch(setCredetials({ accessToken, user }));
+      } else {
+        setCustomError("Erro ao iniciar sessão");
+      }
     } catch (error) {
-      console.error("Erro ao inicar sessão:", error);
+      console.error("Erro ao iniciar sessão:", error);
       if (!error.status) {
         setCustomError("Nenhuma resposta por parte do servidor");
       }
+      setCustomError("Erro ao iniciar sessão");
     }
   };
 
@@ -123,9 +136,7 @@ const LoginPage = () => {
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column" alignItems="center">
-            <Typography variant="h4" sx={{ mb: 2 }}>
-              TREINADOR
-            </Typography>
+            <Typography variant="h4">TREINADOR</Typography>
             <Typography variant="h5" sx={{ mb: 2, mt: 4 }}>
               Email: treinador@gymhub.com
             </Typography>

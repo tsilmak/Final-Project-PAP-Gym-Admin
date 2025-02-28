@@ -1,23 +1,14 @@
-import { CircularProgress, Box, Typography } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import React from "react";
 
 const Loading = ({ showText = true }) => {
   return (
-    <Box
+    <LinearProgress
       sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
+        mt: "2.75rem",
       }}
-    >
-      {showText && (
-        <Typography variant="body1" gutterBottom>
-          Os Dados estão a carregar, Por favor aguarde
-        </Typography>
-      )}
-      <CircularProgress />
-    </Box>
+      color="primary"
+    />
   );
 };
 

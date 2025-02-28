@@ -73,10 +73,9 @@ const navItemsTreinador = [
   { text: "Exercícios", icon: <FitnessCenter /> },
 ];
 
-// Utility function to get the base path
 const getBasePath = (pathname) => {
   const parts = pathname.split("/");
-  return parts[1] || ""; // Return the first segment after the initial slash
+  return parts[1] || "";
 };
 
 const Sidebar = ({ drawerWidth, isNonMobile }) => {
@@ -88,7 +87,7 @@ const Sidebar = ({ drawerWidth, isNonMobile }) => {
   // Access sidebar state from Redux
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector((state) => state.global.isSidebarOpen);
-  const user = useSelector(selectCurrentUser); // Get current user data
+  const user = useSelector(selectCurrentUser);
 
   // Set the active route based on the pathname
   useEffect(() => {
@@ -105,7 +104,7 @@ const Sidebar = ({ drawerWidth, isNonMobile }) => {
       case "Treinador":
         return navItemsTreinador;
       default:
-        return []; // Return an empty array or a default set of items if needed
+        return [];
     }
   })();
 
@@ -185,8 +184,8 @@ const Sidebar = ({ drawerWidth, isNonMobile }) => {
                     <ListItemButton
                       onClick={() => {
                         const cleanedPath = cleanText(text);
-                        navigate(`/${cleanedPath}`); // Use the cleanText function to navigate
-                        setActive(cleanedPath); // Set the active state
+                        navigate(`/${cleanedPath}`);
+                        setActive(cleanedPath);
                       }}
                       sx={{
                         backgroundColor:
@@ -230,7 +229,7 @@ const Sidebar = ({ drawerWidth, isNonMobile }) => {
               <Box
                 component="img"
                 alt="profile"
-                src={user?.profilePicture} // Ensure the profile picture is pulled from user state
+                src={user?.profilePicture}
                 height="40px"
                 width="40px"
                 borderRadius="50%"
@@ -243,13 +242,12 @@ const Sidebar = ({ drawerWidth, isNonMobile }) => {
                   sx={{ color: theme.palette.secondary[100] }}
                 >
                   {`${user?.fname} ${user?.lname}`}{" "}
-                  {/* Use user data for name */}
                 </Typography>
                 <Typography
                   fontSize="0.8rem"
                   sx={{ color: theme.palette.secondary[200] }}
                 >
-                  {user?.role} {/* Use user data for role */}
+                  {user?.role}
                 </Typography>
               </Box>
             </FlexBetween>

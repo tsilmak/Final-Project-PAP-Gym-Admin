@@ -18,6 +18,7 @@ import {
   DialogActions,
   Snackbar,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import Header from "components/common/Header";
 import SearchBar from "components/common/SearchBar";
@@ -26,6 +27,7 @@ import { useTheme } from "@emotion/react";
 import { useAddMachineMutation } from "state/api";
 import { useGetAllMachinesQuery } from "state/api";
 import { useNavigate } from "react-router-dom";
+import Loading from "components/common/Loading";
 
 const MachineTypeDisplay = {
   Cardio: "Cardio",
@@ -118,7 +120,7 @@ const Maquinas = () => {
     });
   };
 
-  if (isLoading) return <Typography>Carregando máquinas...</Typography>;
+  if (isLoading) return <Loading />;
   if (isError) return <Typography>Erro ao carregar máquinas</Typography>;
 
   return (
