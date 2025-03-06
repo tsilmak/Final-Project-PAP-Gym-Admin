@@ -29,7 +29,7 @@ import {
   CircularProgress,
   DialogContentText,
   useTheme,
-  Pagination, // Added missing import
+  Pagination,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import {
@@ -1350,7 +1350,7 @@ const ClienteTreinadorIndividual = () => {
         title={userData ? `Cliente` : "Detalhes do Cliente"}
         subtitle="Gestão e Acompanhamento"
       />
-      <Box sx={{ mx: "5rem" }}>
+      <Box sx={{ mx: { xs: "1rem", md: "5rem" } }}>
         <Paper
           elevation={2}
           sx={{

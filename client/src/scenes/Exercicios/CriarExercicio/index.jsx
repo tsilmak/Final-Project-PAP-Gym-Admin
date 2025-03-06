@@ -199,7 +199,7 @@ const CriarExercicio = () => {
 
       <Box
         sx={{
-          mx: "5rem",
+          mx: { xs: "1rem", md: "5rem" },
           padding: 4,
           boxShadow: 3,
           borderRadius: "8px",

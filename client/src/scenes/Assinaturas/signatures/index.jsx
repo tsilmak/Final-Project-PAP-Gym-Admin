@@ -229,13 +229,17 @@ const SignaturesPage = () => {
     return <ErrorOverlay error={error} dataName={"Todas as assinaturas"} />;
 
   return (
-    <Box sx={{ backgroundColor: theme.palette.background.default }}>
+    <Box
+      sx={{
+        backgroundColor: theme.palette.background.default,
+      }}
+    >
       <Header title="Assinaturas" subtitle="Visualize as assinaturas" />
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <TableContainer
         component={Paper}
         sx={{
-          maxWidth: "calc(100% - 10rem)",
+          maxWidth: { xs: "calc(100% - 2rem)", md: "calc(100% - 10rem)" },
           margin: "0 auto",
           backgroundColor: theme.palette.background.default,
           borderRadius: "8px",

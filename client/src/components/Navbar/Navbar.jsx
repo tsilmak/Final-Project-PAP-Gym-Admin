@@ -19,6 +19,7 @@ import {
   Typography,
   Menu,
   MenuItem,
+  useMediaQuery,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "state/api";
@@ -31,6 +32,7 @@ const Navbar = ({ user, fname, lname, role, profilePicture }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const [logout] = useLogoutMutation();
+  const isNonMobile = useMediaQuery("(min-width: 600px)");
 
   // Get the sidebar state from Redux
   const isSidebarOpen = useSelector((state) => state.global.isSidebarOpen);
@@ -54,7 +56,7 @@ const Navbar = ({ user, fname, lname, role, profilePicture }) => {
         background: "none",
         boxShadow: "none",
         transition: "width 0.3s",
-        width: `calc(100% - ${isSidebarOpen ? "250px" : "0"})`,
+        width: ` calc(100% - ${isSidebarOpen && isNonMobile ? "250px" : "0"})`,
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between", padding: 0 }}>

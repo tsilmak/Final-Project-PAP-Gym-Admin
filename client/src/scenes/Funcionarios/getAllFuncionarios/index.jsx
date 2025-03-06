@@ -232,7 +232,11 @@ const UserDataGrid = () => {
         <Box sx={{ position: "relative", height: "calc(100vh - 300px)" }}>
           <DataGrid
             loading={isLoading}
-            sx={{ ml: "5rem", mr: "5rem", height: "calc(100vh - 300px)" }}
+            sx={{
+              mx: "5rem",
+              mx: { xs: "1rem", md: "5rem" },
+              height: "calc(100vh - 300px)",
+            }}
             rows={filteredUsers}
             columns={columns(handleDelete)}
             pageSize={10}

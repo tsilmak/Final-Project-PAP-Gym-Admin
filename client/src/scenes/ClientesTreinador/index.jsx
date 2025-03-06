@@ -172,8 +172,8 @@ const ClientesTreinador = () => {
           <DataGrid
             loading={isLoading}
             sx={{
-              ml: isMedium ? "" : "5rem",
-              mr: "5rem",
+              mx: { xs: "1rem", md: "5rem" },
+
               height: "calc(100vh - 300px)",
             }}
             rows={filteredUsers}

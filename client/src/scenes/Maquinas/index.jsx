@@ -18,7 +18,6 @@ import {
   DialogActions,
   Snackbar,
   Alert,
-  LinearProgress,
 } from "@mui/material";
 import Header from "components/common/Header";
 import SearchBar from "components/common/SearchBar";
@@ -124,7 +123,7 @@ const Maquinas = () => {
   if (isError) return <Typography>Erro ao carregar máquinas</Typography>;
 
   return (
-    <Box>
+    <Box sx={{ minHeight: "100vh", px: { xs: 1, sm: 2 } }}>
       <Header
         title="Máquinas do Ginásio"
         subtitle="Gerencie e adicione máquinas de treino"
@@ -133,16 +132,20 @@ const Maquinas = () => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         placeholder="Buscar máquinas..."
+        sx={{ mb: 2 }}
       />
       <Box
         sx={{
           display: "flex",
-          mx: "5rem",
-          my: "1rem",
+          flexDirection: { xs: "column", sm: "row" },
+          mx: { xs: 0, sm: "1rem", md: "5rem" },
+          my: 2,
           justifyContent: "space-between",
+          alignItems: { xs: "stretch", sm: "center" },
+          gap: { xs: 2, sm: 0 },
         }}
       >
-        <FormControl sx={{ minWidth: 200 }}>
+        <FormControl sx={{ minWidth: { xs: "100%", sm: 200 } }}>
           <InputLabel>Tipo de Máquina</InputLabel>
           <Select
             value={machineType}
@@ -162,14 +165,17 @@ const Maquinas = () => {
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
-          sx={{ ml: "5rem", mb: "1.25rem" }}
+          sx={{
+            width: { xs: "100%", sm: "auto" },
+            mt: { xs: 0, sm: "1.25rem" },
+          }}
           onClick={() => setOpenAddDialog(true)}
         >
           Adicionar Máquina
         </Button>
       </Box>
-      <Box sx={{ mx: "5rem", my: "1.5rem" }}>
-        <Grid container spacing={4}>
+      <Box sx={{ mx: { sm: "1rem", md: "5rem" }, my: "1.5rem" }}>
+        <Grid container spacing={{ xs: 2, md: 4 }}>
           {filteredMachines.map((machine) => (
             <Grid item xs={12} sm={6} md={4} key={machine.MachineId}>
               <Card
@@ -179,7 +185,7 @@ const Maquinas = () => {
                   flexDirection: "column",
                   transition: "transform 0.2s",
                   "&:hover": {
-                    transform: "scale(1.02)",
+                    transform: { xs: "none", md: "scale(1.02)" },
                   },
                   backgroundColor: theme.palette.background.alt,
                 }}
@@ -189,7 +195,7 @@ const Maquinas = () => {
                   image={machine.imageUrl}
                   alt={machine.name}
                   sx={{
-                    height: 250,
+                    height: { xs: 200, sm: 250 },
                     objectFit: "contain",
                     objectPosition: "center",
                     backgroundColor: "#f5f5f5",
@@ -200,6 +206,7 @@ const Maquinas = () => {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
+                    flexGrow: 1,
                   }}
                 >
                   <Typography variant="h6" gutterBottom>
@@ -208,8 +215,19 @@ const Maquinas = () => {
                   <Typography variant="subtitle2" color="text.secondary">
                     Tipo: {MachineTypeDisplay[machine.type] || machine.type}
                   </Typography>
-                  <Typography variant="body2">{machine.description}</Typography>
-                  <Box sx={{ mt: "1rem" }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
+                    {machine.description}
+                  </Typography>
+                  <Box sx={{ mt: "auto", pt: 2 }}>
                     <Button
                       variant="contained"
                       fullWidth
@@ -232,15 +250,18 @@ const Maquinas = () => {
           setOpenAddDialog(false);
           clearForm();
         }}
-        maxWidth="md"
+        fullWidth
+        maxWidth="sm"
         sx={{
           "& .MuiPaper-root": {
             backgroundColor: theme.palette.background.alt,
             color: theme.palette.secondary[200],
+            width: "100%",
+            m: { xs: 1, sm: 2 },
           },
         }}
       >
-        <DialogTitle sx={{ fontSize: "1rem" }}>
+        <DialogTitle sx={{ fontSize: { xs: "1rem", sm: "1.25rem" } }}>
           Adicionar Nova Máquina
         </DialogTitle>
         <DialogContent>
@@ -290,7 +311,13 @@ const Maquinas = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            style={{ marginBottom: "1rem" }}
+            style={{
+              width: "100%",
+              padding: "10px",
+              border: `1px dashed ${theme.palette.divider}`,
+              borderRadius: "4px",
+              backgroundColor: theme.palette.background.default,
+            }}
           />
           {formErrors.image && (
             <Typography
@@ -310,20 +337,24 @@ const Maquinas = () => {
                 alt="Pré-visualização"
                 style={{
                   width: "100%",
-                  maxWidth: "550px",
                   height: "auto",
+                  maxHeight: "300px",
+                  objectFit: "contain",
                 }}
               />
             </Box>
           )}
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          sx={{ flexDirection: { xs: "column", sm: "row" }, gap: 1 }}
+        >
           <Button
             onClick={() => {
               setOpenAddDialog(false);
               clearForm();
             }}
             color="text.primary"
+            fullWidth={true}
           >
             Cancelar
           </Button>
@@ -337,6 +368,7 @@ const Maquinas = () => {
               !newMachineDescription ||
               !newMachineImage
             }
+            fullWidth={true}
           >
             {isLoadingAddMachine ? "A Adicionar..." : "Adicionar Máquina"}
           </Button>

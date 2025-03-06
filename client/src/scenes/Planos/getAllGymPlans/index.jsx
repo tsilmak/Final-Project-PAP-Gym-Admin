@@ -117,10 +117,16 @@ const GymPlans = () => {
 
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      <Box sx={{ display: "flex", justifyContent: "end", mr: "5rem" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "end",
+          ml: { xs: "1rem", md: "5rem" },
+        }}
+      >
         <Button
           variant="contained"
-          sx={{ ml: "5rem", width: 150, mb: "1.25rem" }}
+          sx={{ width: 150, mb: "1.25rem", mx: { xs: "1rem", md: "5rem" } }}
           onClick={() => navigate("criar")}
         >
           Criar um Plano
@@ -132,8 +138,7 @@ const GymPlans = () => {
           display: "flex",
           flexWrap: "wrap",
           gap: 2,
-          ml: "5rem",
-          mr: "5rem",
+          mx: { xs: "1rem", md: "5rem" },
         }}
       >
         {filteredRows.map((plan) => (

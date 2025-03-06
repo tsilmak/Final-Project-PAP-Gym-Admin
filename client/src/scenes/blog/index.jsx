@@ -57,11 +57,11 @@ const BlogCard = ({ entry, theme, navigate }) => {
         transition: "transform 0.2s",
         display: "flex",
         flexDirection: "column",
-        minHeight: 300,
+        minHeight: { xs: 250, md: 300 },
         height: "100%",
         "&:hover": {
-          transform: "scale(1.02)",
-          boxShadow: "0 6px 12px rgba(0, 0, 0, 0.15)",
+          transform: { md: "scale(1.02)" }, // Disable scale on mobile
+          boxShadow: { md: "0 6px 12px rgba(0, 0, 0, 0.15)" },
         },
       }}
     >
@@ -108,9 +108,11 @@ const BlogCard = ({ entry, theme, navigate }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: 1, sm: 0 },
         }}
       >
-        <Box>
+        <Box sx={{ textAlign: { xs: "center", sm: "left" } }}>
           {entry?.authors?.map((authors, index) => (
             <Typography key={index} variant="body2">{`${
               authors?.fname + " " + authors?.lname
@@ -122,7 +124,7 @@ const BlogCard = ({ entry, theme, navigate }) => {
               month: "long",
               day: "numeric",
             })}
-          </Typography>{" "}
+          </Typography>
         </Box>
         <Button
           variant="text"
@@ -153,6 +155,8 @@ const DeleteConfirmationModal = ({
     sx={{
       "& .MuiPaper-root": {
         backgroundColor: theme.palette.background.default,
+        width: { xs: "90%", sm: "auto" },
+        maxWidth: "500px",
       },
     }}
   >
@@ -164,12 +168,12 @@ const DeleteConfirmationModal = ({
           : `A categoria: "${categoryName}" ainda está associada a ${numberOfAssociatedBlogs} blogs e não pode ser eliminada.`}
       </DialogContentText>
     </DialogContent>
-    <DialogActions>
-      <Button onClick={onClose} color="black">
+    <DialogActions sx={{ flexDirection: { xs: "column", sm: "row" }, gap: 1 }}>
+      <Button onClick={onClose} color="black" fullWidth={true}>
         Cancelar
       </Button>
       {canDelete && (
-        <Button onClick={onConfirm} color="secondary">
+        <Button onClick={onConfirm} color="secondary" fullWidth={true}>
           Eliminar
         </Button>
       )}
@@ -201,6 +205,8 @@ const EditCategoryModal = ({ open, onClose, currentName, onSave, theme }) => {
       sx={{
         "& .MuiPaper-root": {
           backgroundColor: theme.palette.background.default,
+          width: { xs: "90%", sm: "auto" },
+          maxWidth: "500px",
         },
       }}
     >
@@ -217,14 +223,17 @@ const EditCategoryModal = ({ open, onClose, currentName, onSave, theme }) => {
           onChange={(e) => setNewName(e.target.value)}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="black">
+      <DialogActions
+        sx={{ flexDirection: { xs: "column", sm: "row" }, gap: 1 }}
+      >
+        <Button onClick={handleClose} color="black" fullWidth={true}>
           Cancelar
         </Button>
         <Button
           onClick={handleSave}
           color="secondary"
           disabled={newName.trim() === ""}
+          fullWidth={true}
         >
           Guardar
         </Button>
@@ -232,6 +241,7 @@ const EditCategoryModal = ({ open, onClose, currentName, onSave, theme }) => {
     </Dialog>
   );
 };
+
 const AddCategoryModal = ({
   open,
   onClose,
@@ -239,6 +249,7 @@ const AddCategoryModal = ({
   isLoadingCreateCategory,
 }) => {
   const [newCategory, setNewCategory] = useState("");
+  const theme = useTheme();
 
   const handleAdd = () => {
     if (newCategory.trim()) {
@@ -247,7 +258,7 @@ const AddCategoryModal = ({
       onClose();
     }
   };
-  const theme = useTheme();
+
   return (
     <Dialog
       open={open}
@@ -255,6 +266,8 @@ const AddCategoryModal = ({
       sx={{
         "& .MuiPaper-root": {
           backgroundColor: theme.palette.background.default,
+          width: { xs: "90%", sm: "auto" },
+          maxWidth: "500px",
         },
       }}
     >
@@ -271,14 +284,17 @@ const AddCategoryModal = ({
           onChange={(e) => setNewCategory(e.target.value)}
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="black">
+      <DialogActions
+        sx={{ flexDirection: { xs: "column", sm: "row" }, gap: 1 }}
+      >
+        <Button onClick={onClose} color="black" fullWidth={true}>
           Cancelar
         </Button>
         <Button
           onClick={handleAdd}
           color="secondary"
           disabled={isLoadingCreateCategory}
+          fullWidth={true}
         >
           {isLoadingCreateCategory ? "A Guardar..." : "Guardar"}
         </Button>
@@ -290,6 +306,7 @@ const AddCategoryModal = ({
 const Category = ({ category, onDelete, onEdit, associatedBlogs, theme }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const handleDelete = () => {
     setIsModalOpen(true);
   };
@@ -321,7 +338,7 @@ const Category = ({ category, onDelete, onEdit, associatedBlogs, theme }) => {
         title={`${category.name} está associada a: (${associatedBlogs} blogs)`}
       >
         <Typography variant="body1">
-          <Typography variant="body1">
+          <Typography variant="body1" component="span">
             {category.name.length > 10
               ? `${category.name.substring(0, 10)}...`
               : category.name}{" "}
@@ -334,7 +351,7 @@ const Category = ({ category, onDelete, onEdit, associatedBlogs, theme }) => {
           </Typography>
         </Typography>
       </Tooltip>
-      <Box>
+      <Box sx={{ display: "flex", gap: 1 }}>
         <IconButton size="small" onClick={() => setIsEditModalOpen(true)}>
           <Edit fontSize="small" />
         </IconButton>
@@ -343,7 +360,6 @@ const Category = ({ category, onDelete, onEdit, associatedBlogs, theme }) => {
         </IconButton>
       </Box>
 
-      {/* Delete confirmation modal */}
       <DeleteConfirmationModal
         theme={theme}
         open={isModalOpen}
@@ -354,7 +370,6 @@ const Category = ({ category, onDelete, onEdit, associatedBlogs, theme }) => {
         numberOfAssociatedBlogs={associatedBlogs}
       />
 
-      {/* Edit category modal */}
       <EditCategoryModal
         key={category.categoryId}
         open={isEditModalOpen}
@@ -373,15 +388,13 @@ const Blog = () => {
   const navigate = useNavigate();
   const { data: dataBlogPreviews, error: errorBlogPreviews } =
     useGetBlogsPreviewByCurrentUserIdQuery();
-
   const { data: dataCategories, error: errorCategories } =
     useGetAllCategoriesQuery();
-  console.log(dataCategories);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage] = useState(15);
   const [entriesPerPageCategories] = useState(12);
-
   const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(true);
   const [categorySearchQuery, setCategorySearchQuery] = useState("");
   const [currentCategoryPage, setCurrentCategoryPage] = useState(1);
@@ -393,6 +406,7 @@ const Blog = () => {
   const [deleteCategory] = useDeleteCategoryMutation();
   const [createCategory, { isLoading: isLoadingCreateCategory }] =
     useCreateCategoryMutation();
+
   const filteredEntries = dataBlogPreviews?.filter((entry) =>
     entry.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -417,7 +431,6 @@ const Blog = () => {
       setSnackbarOpen(true);
     } catch (err) {
       console.error("Failed to update category:", err);
-      console.log(err);
       setSnackbarMessage(
         `Ocorreu um erro ao eliminar a categoria: ${
           err?.message || "erro desconhecido"
@@ -436,7 +449,6 @@ const Blog = () => {
       setSnackbarOpen(true);
     } catch (err) {
       console.error("Failed to update category:", err);
-      console.log(err);
       setSnackbarMessage(
         `Ocorreu um erro ao atualizar a categoria: ${
           err?.message || "erro desconhecido"
@@ -447,7 +459,6 @@ const Blog = () => {
     }
   };
 
-  // Add a new category
   const handleCreateCategory = async (categoryData) => {
     try {
       await createCategory(categoryData).unwrap();
@@ -455,7 +466,6 @@ const Blog = () => {
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
     } catch (err) {
-      console.log(err);
       setSnackbarMessage(
         `Ocorreu um erro ao criar a categoria: ${
           err.data.error || "erro desconhecido"
@@ -465,6 +475,7 @@ const Blog = () => {
       setSnackbarOpen(true);
     }
   };
+
   return (
     <>
       <Header
@@ -473,22 +484,30 @@ const Blog = () => {
       />
       <Box
         sx={{
-          ml: "5rem",
-          display: "flex",
-          mr: "5rem",
           mx: { xs: "1rem", md: "5rem" },
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          gap: { xs: 2, md: 3 },
         }}
       >
         {/* Blog Section */}
-        <Box sx={{ flexGrow: 1 }}>
-          {/* Blog Search */}
-          <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
+        <Box sx={{ flexGrow: 1, width: { xs: "100%", md: "auto" } }}>
+          <Box
+            sx={{
+              mb: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              flexDirection: { xs: "column", sm: "row" },
+            }}
+          >
             <InputBase
               placeholder="Procurar por blog"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               sx={{
                 flexGrow: 1,
+                width: { xs: "100%", sm: "auto" },
                 border: "1px solid lightgray",
                 borderRadius: 2,
                 pl: 2,
@@ -511,11 +530,13 @@ const Blog = () => {
               p: 0,
               m: 0,
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", // Responsive grid
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "repeat(auto-fill, minmax(300px, 1fr))",
+              },
               gap: 2,
             }}
           >
-            {/* Check if dataBlogPreviews exists and has entries */}
             {dataBlogPreviews && dataBlogPreviews.length > 0 ? (
               currentEntries.map((entry) => (
                 <BlogCard
@@ -532,17 +553,21 @@ const Blog = () => {
             )}
           </Box>
 
-          {/* Pagination for Blogs */}
           <Pagination
             count={Math.ceil(filteredEntries?.length / entriesPerPage)}
             page={currentPage}
             onChange={(event, value) => setCurrentPage(value)}
-            sx={{ mt: 4 }}
+            sx={{ mt: 4, display: "flex", justifyContent: "center" }}
           />
         </Box>
 
         {/* Categories Section */}
-        <Box sx={{ width: "250px", ml: 3 }}>
+        <Box
+          sx={{
+            width: { xs: "100%", md: "250px" },
+            minWidth: { md: "250px" },
+          }}
+        >
           <Box
             sx={{
               mb: 2,
@@ -560,13 +585,22 @@ const Blog = () => {
             </IconButton>
           </Box>
           <Collapse in={isCategoriesExpanded}>
-            <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1 }}>
+            <Box
+              sx={{
+                mb: 2,
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                flexDirection: { xs: "column", sm: "row" },
+              }}
+            >
               <InputBase
                 placeholder="Procurar categorias..."
                 value={categorySearchQuery}
                 onChange={(e) => setCategorySearchQuery(e.target.value)}
                 sx={{
                   flexGrow: 1,
+                  width: { xs: "100%", sm: "auto" },
                   border: "1px solid lightgray",
                   borderRadius: 2,
                   pl: 2,
@@ -582,7 +616,6 @@ const Blog = () => {
               </IconButton>
             </Box>
 
-            {/* Category List */}
             <Box>
               {dataCategories ? (
                 <>
@@ -603,11 +636,11 @@ const Blog = () => {
                     )}
                     page={currentCategoryPage}
                     onChange={(event, value) => setCurrentCategoryPage(value)}
-                    sx={{ mt: 2 }}
+                    sx={{ mt: 2, display: "flex", justifyContent: "center" }}
                   />
                 </>
               ) : errorCategories ? (
-                <Box sx={{}}>
+                <Box>
                   <ErrorOverlay
                     error={errorCategories}
                     dataName={"Categorias"}
@@ -619,10 +652,10 @@ const Blog = () => {
                   <Skeleton
                     sx={{
                       my: "0.5rem",
+                      width: "100%",
                     }}
                     key={i}
                     variant="rounded"
-                    width={250}
                     height={60}
                   />
                 ))
@@ -632,7 +665,6 @@ const Blog = () => {
         </Box>
       </Box>
 
-      {/* Add Category Modal */}
       <AddCategoryModal
         open={isAddCategoryModalOpen}
         onClose={() => setIsAddCategoryModalOpen(false)}
@@ -643,11 +675,12 @@ const Blog = () => {
         open={snackbarOpen}
         autoHideDuration={5000}
         onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert
           onClose={() => setSnackbarOpen(false)}
           severity={snackbarSeverity}
-          sx={{ width: "100%" }}
+          sx={{ width: { xs: "90%", sm: "100%" } }}
         >
           {snackbarMessage}
         </Alert>

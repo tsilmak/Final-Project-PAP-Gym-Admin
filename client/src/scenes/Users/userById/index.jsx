@@ -183,7 +183,13 @@ const UserProfile = () => {
     <>
       <Header title="Perfil do Cliente" subtitle="Edite as Informações" />
 
-      <Box sx={{ px: "5rem" }}>
+      <Box
+        sx={{
+          mx: "5rem",
+          mx: { xs: "1rem", md: "5rem" },
+          height: "calc(100vh - 300px)",
+        }}
+      >
         <Grid container spacing={14}>
           <Grid item xs={12} md={8}>
             <form onSubmit={handleSubmit}>

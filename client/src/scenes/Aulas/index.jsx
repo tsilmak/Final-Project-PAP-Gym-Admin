@@ -744,6 +744,7 @@ const MapaAulas = () => {
           display: "flex",
           mx: "5rem",
           gap: 5,
+          mx: { xs: "1rem", md: "5rem" },
         }}
       >
         <Box

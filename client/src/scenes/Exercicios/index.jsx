@@ -83,9 +83,13 @@ const ExerciseManagement = () => {
         setSearchQuery={setSearchQuery}
         placeholder="Pesquisar exercícios..."
       />
-      {/* Button to open the dialog for adding a new exercise */}
       <Box
-        sx={{ display: "flex", justifyContent: "flex-end", mb: 2, mx: "5rem" }}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          mb: 2,
+          mx: { xs: "1rem", md: "5rem" },
+        }}
       >
         <Button
           variant="contained"
@@ -111,7 +115,7 @@ const ExerciseManagement = () => {
               sm={6}
               md={4}
               key={exercise.exerciseId}
-              sx={{ ml: "5rem" }}
+              sx={{ mx: { xs: "1rem", md: "5rem" } }}
             >
               <Card
                 sx={{

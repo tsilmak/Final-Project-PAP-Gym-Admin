@@ -25,6 +25,7 @@ import {
   ListItemAvatar,
   Avatar,
   Input,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Search,
@@ -52,6 +53,12 @@ const MACHINE_TYPE_COLORS = {
   Cardio: "#3f51b5",
   Musculacao: "#f50057",
   Funcional: "#4caf50",
+};
+
+const responsiveButtonStyles = {
+  minWidth: { xs: "100%", sm: "auto" },
+  margin: { xs: "0.5rem 0", sm: "0 0.5rem" },
+  padding: { xs: "8px 16px", sm: "6px 16px" },
 };
 
 const ExercicioById = () => {
@@ -248,29 +255,51 @@ const ExercicioById = () => {
   return (
     <>
       <Header
-        title={"Forumlário de edição do Exercício"}
+        title={"Formulário de edição do Exercício"}
         subtitle={"Atualiza os dados deste exercício"}
       />
 
-      <Box sx={{ mx: "5rem", padding: 4, boxShadow: 3, borderRadius: "8px" }}>
+      <Box
+        sx={{
+          mx: { xs: "1rem", md: "5rem" },
+          padding: { xs: 2, sm: 4 },
+          boxShadow: 3,
+          borderRadius: "8px",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: { xs: "stretch", sm: "center" },
             mb: 5,
+            gap: { xs: 2, sm: 0 },
           }}
         >
-          <Button color="white" variant="outlined" onClick={() => navigate(-1)}>
+          <Button
+            color="white"
+            variant="outlined"
+            onClick={() => navigate(-1)}
+            sx={responsiveButtonStyles}
+          >
             Voltar
           </Button>
 
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              gap: 2,
+              width: { xs: "100%", sm: "auto" },
+            }}
+          >
             <Button
               variant="contained"
               color={isEditing ? "secondary" : "primary"}
               startIcon={<Edit />}
               onClick={handleToggleEdit}
+              sx={responsiveButtonStyles}
             >
               {isEditing ? "Cancelar Edição" : "Editar"}
             </Button>
@@ -280,6 +309,7 @@ const ExercicioById = () => {
               startIcon={<DeleteForeverIcon />}
               onClick={() => setDeleteDialogOpen(true)}
               disabled={isEditing}
+              sx={responsiveButtonStyles}
             >
               Eliminar
             </Button>
@@ -287,7 +317,7 @@ const ExercicioById = () => {
         </Box>
 
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={3}>
+          <Grid container spacing={{ xs: 2, sm: 3 }}>
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Nome do Exercício"
@@ -351,10 +381,12 @@ const ExercicioById = () => {
                 sx={{
                   backgroundColor: theme.palette.background.alt,
                   color: theme.palette.secondary[200],
-                  p: 2,
+                  p: { xs: 1, sm: 2 },
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: { xs: "column", sm: "row" },
+                  alignItems: { xs: "stretch", sm: "center" },
                   justifyContent: "space-between",
+                  gap: { xs: 1, sm: 0 },
                 }}
               >
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -371,6 +403,7 @@ const ExercicioById = () => {
                     color="secondary"
                     onClick={handleOpenEquipmentDialog}
                     disabled={!isEditing || isEditingLoading}
+                    sx={responsiveButtonStyles}
                   >
                     Selecionar Máquina
                   </Button>
@@ -453,6 +486,7 @@ const ExercicioById = () => {
                   component="span"
                   disabled={!isEditing || isEditingLoading}
                   startIcon={<CloudUpload />}
+                  sx={responsiveButtonStyles}
                 >
                   Carregar Imagem*
                 </Button>
@@ -506,8 +540,11 @@ const ExercicioById = () => {
                   type="submit"
                   variant="contained"
                   color="primary"
-                  fullWidth
                   disabled={isEditingLoading}
+                  sx={{
+                    ...responsiveButtonStyles,
+                    width: { xs: "100%", sm: "auto" },
+                  }}
                 >
                   {isEditingLoading ? "A Guardar..." : "Guardar Alterações"}
                 </Button>
@@ -521,6 +558,7 @@ const ExercicioById = () => {
           onClose={handleCloseEquipmentDialog}
           maxWidth="md"
           fullWidth
+          fullScreen={useMediaQuery(theme.breakpoints.down("sm"))}
         >
           <DialogTitle>
             <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -578,18 +616,22 @@ const ExercicioById = () => {
             </List>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseEquipmentDialog} color="secondary">
+            <Button
+              onClick={handleCloseEquipmentDialog}
+              color="secondary"
+              sx={responsiveButtonStyles}
+            >
               Cancelar
             </Button>
           </DialogActions>
         </Dialog>
 
-        {/* Delete Confirmation Dialog */}
         <Dialog
           open={deleteDialogOpen}
           onClose={handleCloseDeleteDialog}
           aria-labelledby="delete-dialog-title"
           aria-describedby="delete-dialog-description"
+          fullScreen={useMediaQuery(theme.breakpoints.down("sm"))}
         >
           <DialogTitle id="delete-dialog-title">
             Confirmar Eliminação
@@ -601,7 +643,11 @@ const ExercicioById = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDeleteDialog} color="secondary">
+            <Button
+              onClick={handleCloseDeleteDialog}
+              color="secondary"
+              sx={responsiveButtonStyles}
+            >
               Cancelar
             </Button>
             <Button
@@ -609,6 +655,7 @@ const ExercicioById = () => {
               color="error"
               autoFocus
               disabled={isDeleting}
+              sx={responsiveButtonStyles}
             >
               {isDeleting ? "A Eliminar..." : "Eliminar"}
             </Button>
