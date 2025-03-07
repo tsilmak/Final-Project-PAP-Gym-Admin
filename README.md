@@ -44,7 +44,7 @@ Para visualizar o painel administrativo localmente, siga os seguintes passos:
    cd server
    npm i
    ```
-3. Configure as variáveis de ambiente no cliente e no back-end seguindo o exmeplo do arquivo de cada pasta `.env.example`:
+3. Configure as variáveis de ambiente no servidor seguindo o exemplo `.env.example`:
    ```env
    
     # Configurações do Banco de Dados
@@ -76,8 +76,22 @@ Para visualizar o painel administrativo localmente, siga os seguintes passos:
     CORS_ORIGIN=http://localhost:5173
    
    ```
+4. Configure as variáveis de ambiente no cliente seguindo o exemplo `.env.example`:
+   ```env
+   
+   # Base API URL for the backend
+    VITE_BASE_API_URL=http://localhost:8002
+
+   # Frontend URL
+    VITE_URL=http://localhost:5173
+
+   ```
 4. Execute o servidor na pasta (back-end) e o cliente na pasta (cliente):
    ```sh
+   cd client
+   npm run dev
+
+   cd server
    npm run dev
    ```
 5. O painel administrativo estará disponível em `http://localhost:3000`
