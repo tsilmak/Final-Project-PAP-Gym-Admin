@@ -79,11 +79,17 @@ Para visualizar o painel administrativo localmente, siga os seguintes passos:
 4. Configure as variáveis de ambiente no cliente seguindo o exemplo `.env.example`:
    ```env
    
-   # Base API URL for the backend
-    VITE_BASE_API_URL=http://localhost:8002
+   # Base URL for the API
+    REACT_APP_BASE_URL=http://localhost:8000
 
-   # Frontend URL
-    VITE_URL=http://localhost:5173
+    # Cloudinary upload URL
+    CLOUDINARY_URL=https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/upload
+
+    # Upload folder preset for Cloudinary
+    UPLOAD_FOLDER_PRESET=your-folder-preset
+
+    # Disable source map generation for production
+    GENERATE_SOURCEMAP=false
 
    ```
 4. Execute o servidor na pasta (back-end) e o cliente na pasta (cliente):
