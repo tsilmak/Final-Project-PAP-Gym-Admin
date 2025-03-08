@@ -1,5 +1,5 @@
 # Sonder Hub - Painel Administrativo
-https://main.d21ki34dfffbak.amplifyapp.com/
+main.d2ixoe9qkxovtj.amplifyapp.com/
 
 ## Visão Geral
 O Painel administrativo, Sonder Hub é uma plataforma web desenvolvida para a gestão eficiente de um ginásio fícticio, proporciona ferramentas administrativas completas para o gerenciamento de clientes, planos de treino, pagamentos e muito mais.
